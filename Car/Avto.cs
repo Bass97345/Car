@@ -13,7 +13,7 @@ namespace Car
         private int Bak;
         private float Top;
         private float Ras;
-        private int Probeg = 0;
+        private double Probeg = 0;
         private float ras1km;
         private float speed;
         public Avto(int number, int bak, float top, float ras)
@@ -44,7 +44,7 @@ namespace Car
         {
 
 
-            Console.WriteLine($"Номер машины: {Number}\nОбъём бака: {Bak}л\nТопливо: {Top}\nРасход: {Ras} л/100км\nПробег: {Probeg}км");
+            Console.WriteLine($"Номер машины: {Number}\nОбъём бака: {Bak}л\nТопливо: {Top}л\nРасход: {Ras} л/100км\nПробег: {Math.Round(Probeg, 2)}км");
             Console.WriteLine("---------------------------------------------------------------------------------------------");
 
         }
@@ -52,15 +52,26 @@ namespace Car
 
         public virtual void Zapravka(float top)
         {
-            if (top > Bak)
+            if (Top < 0 || Top <= 0) Top = 0;
+
+            while (top < 0 || top > Bak || top > (Bak - Top))
             {
-                Console.WriteLine("Вы не можете залить топлива больше чем объём бака, теперь ваш бак полон");
-                Top = Bak;
+                if (Top == Bak)
+                {
+                    Console.WriteLine("Ваш бак полон");
+                    return;
+                }
+                
+                if (top < 0) Console.WriteLine("Число топлива не может быть меньше 0\nВведите число");
+                if (top > Bak || top > (Bak - Top)) Console.WriteLine("Вы не можете залить топлива больше чем объём бака\nВведите число");
+
+                top = int.Parse(Console.ReadLine());
             }
-
-
+        
             Top += top;
-            Console.WriteLine($"Вы заправились! Топлива в баке: {Bak}л");
+
+            
+            Console.WriteLine($"Вы заправились! Топлива в баке: {Top}л");
 
         }
 
@@ -68,47 +79,47 @@ namespace Car
         public virtual void Move()
         {
             Console.WriteLine("Введите начальную координату X");
-            int startx = int.Parse(Console.ReadLine());
+            double startx = double.Parse(Console.ReadLine());
             Console.WriteLine("Введите начальную координату Y");
-            int starty = int.Parse(Console.ReadLine());
+            double starty = double.Parse(Console.ReadLine());
             Console.WriteLine("Введите конечную координату X");
-            int endx = int.Parse(Console.ReadLine());
+            double endx = double.Parse(Console.ReadLine());
             Console.WriteLine("Введите конечную координату Y");
-            int endy = int.Parse(Console.ReadLine());
+            double endy = double.Parse(Console.ReadLine());
 
-            int dx = endx - startx;
-            int dy = endy - starty;
+            double dx = endx - startx;
+            double dy = endy - starty;
             double way = Math.Sqrt(dx * dx + dy * dy);
+            
 
+            
 
+            double resultKm = 0;
 
-
-            int resultKm = 0;
-
-            for (int i = 0; i < way; i++)
+            for (double i = 0; i < way; i += 0.1)
             {
                 if (Top <= 0)
                 {
-                    Console.WriteLine($"Вы проехали: {resultKm}км и топливо кончилось, дозаправится?\n1.Да\n2.Нет(завершить поездку)");
-                    int zap = int.Parse(Console.ReadLine());
+                    Console.WriteLine($"Вы проехали: {Math.Round(resultKm, 2)}км и топливо кончилось, дозаправится?\n1.Да\n2.Нет(завершить поездку)");
+                    float zap = float.Parse(Console.ReadLine());
 
                     if (zap == 1)
                     {
                         Console.WriteLine("Введите количество топлива");
-                        int top = int.Parse(Console.ReadLine())!;
+                        float top = float.Parse(Console.ReadLine())!;
                         Zapravka(top);
-                    }else if (zap == 2)
+                    } else if (zap == 2)
                     {
                         break;
                     }
 
                 }
 
-                Top -= ras1km;
-                resultKm += 1;
+                Top -= ras1km *0.1f;
+                resultKm += 0.1;
             }
 
-            Console.WriteLine($"Машина проехала: {resultKm}км");
+            Console.WriteLine($"Машина проехала: {Math.Round(resultKm, 2)}км");
             Ostatok();
             WholeProber(resultKm);
 
@@ -117,16 +128,17 @@ namespace Car
 
 
 
-        private void WholeProber(int amount) 
+        private void WholeProber(double amount) 
         {
             Probeg += amount;
-            Console.WriteLine($"Общий пробег автомобиля: {Probeg}км");
+            Console.WriteLine($"Общий пробег автомобиля: {Math.Round(Probeg, 2)}км");
         }
 
 
         private void Ostatok()
         {
             if (Top < 0) Top = 0;
+            
             Console.WriteLine($"Остаток топлива: {Top}л");
         }
 

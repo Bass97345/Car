@@ -21,12 +21,16 @@
 
             while (IsValidNumber(countCar) == false || int.Parse(countCar) < 0 || int.Parse(countCar) > 100)
             {
-                if (int.Parse(countCar) < 0 || int.Parse(countCar) > 100)
+                if (IsValidNumber(countCar) == false)
+                {
+                    Console.WriteLine("Ввидите число");
+                }else if (int.Parse(countCar) < 0 || int.Parse(countCar) > 100)
                 {
                     Console.WriteLine("Число не должно быть меньше 0 и больше 100");
                 }
-                Console.WriteLine("Ввидите число");
+
                 countCar = Console.ReadLine();
+
             }
 
             for (int i = 0; i < int.Parse(countCar); i++)
@@ -34,32 +38,38 @@
                 num = i + 1;
                 ras = rnd.Next(10, 31);
 
-                Console.WriteLine("Ввидите объём бака");
+                Console.WriteLine($"Ввидите объём бака для машины N{i+1}");
                 string bak = Console.ReadLine();
 
                 while (IsValidNumber(bak) == false || int.Parse(bak) < 0)
                 {
-                    if (int.Parse(bak) < 0)
+                    if (IsValidNumber(countCar) == false)
+                    {
+                        Console.WriteLine("Ввидите число");
+                    }else if (int.Parse(bak) < 0)
                     {
                         Console.WriteLine("Число не должно быть меньше 0");
                     }
-                    Console.WriteLine("Ввидите число");
+                    
                     bak = Console.ReadLine();
                 }
 
 
 
 
-                Console.WriteLine("Ввидите количество топлива");
+                Console.WriteLine($"Ввидите количество топлива для машины N{i+1}");
                 string top = Console.ReadLine();
 
                 while (IsValidNumberFloat(top) == false || int.Parse(top) < 0 || int.Parse(top) > int.Parse(bak) )
                 {
-                    if (int.Parse(top) < 0 || int.Parse(top) > int.Parse(bak))
+                    if (IsValidNumber(countCar) == false)
+                    {
+                        Console.WriteLine("Ввидите число");
+                    }else if (int.Parse(top) < 0 || int.Parse(top) > int.Parse(bak))
                     {
                         Console.WriteLine("Число не должно быть меньше 0 или больше объёма бака");
                     }
-                    Console.WriteLine("Ввидите число");
+                    
                     top = Console.ReadLine();
                 }
 
@@ -68,6 +78,7 @@
 
             }
 
+            Console.WriteLine("----------------------------------------------------------------------------------------");
 
             while (true)
             {
@@ -182,6 +193,7 @@
                             if(Cars.Count() == 1)
                             {
                                 Console.WriteLine("Нет машин с которыми может произоти ДТП");
+                                break;
                             }
 
                             int dtp = rnd.Next(1, Cars.Count()+1);
