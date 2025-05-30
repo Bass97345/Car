@@ -95,7 +95,7 @@
                 while (IsValidNumber(chos) == false)
                 {
                     Console.WriteLine("Ввидите число");
-                    countCar = Console.ReadLine();
+                    chos = Console.ReadLine();
                 }
 
                 if (int.Parse(chos) == -1)
